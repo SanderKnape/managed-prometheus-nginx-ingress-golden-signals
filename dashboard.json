@@ -1,0 +1,200 @@
+{
+    "category": "CUSTOM",
+    "displayName": "Application Landscape",
+    "mosaicLayout": {
+      "columns": 12,
+      "tiles": [
+        {
+          "height": 3,
+          "widget": {
+            "title": "# requests trend",
+            "xyChart": {
+              "chartOptions": {
+                "mode": "COLOR"
+              },
+              "dataSets": [
+                {
+                  "minAlignmentPeriod": "60s",
+                  "plotType": "LINE",
+                  "targetAxis": "Y1",
+                  "timeSeriesQuery": {
+                    "apiSource": "DEFAULT_CLOUD",
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "alignmentPeriod": "60s",
+                        "crossSeriesReducer": "REDUCE_NONE",
+                        "perSeriesAligner": "ALIGN_DELTA"
+                      },
+                      "filter": "metric.type=\"prometheus.googleapis.com/nginx_ingress_controller_requests/counter\" resource.type=\"prometheus_target\" metric.label.\"ingress\"=\"backend\"",
+                      "secondaryAggregation": {
+                        "alignmentPeriod": "60s",
+                        "crossSeriesReducer": "REDUCE_SUM",
+                        "perSeriesAligner": "ALIGN_SUM"
+                      }
+                    }
+                  }
+                }
+              ],
+              "timeshiftDuration": "0s",
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": "LINEAR"
+              }
+            }
+          },
+          "width": 3,
+          "xPos": 3,
+          "yPos": 2
+        },
+        {
+          "height": 2,
+          "widget": {
+            "scorecard": {
+              "sparkChartView": {
+                "sparkChartType": "SPARK_LINE"
+              },
+              "timeSeriesQuery": {
+                "timeSeriesQueryLanguage": "fetch prometheus_target\n| metric 'prometheus.googleapis.com/nginx_ingress_controller_requests/counter'\n| filter (metric.ingress == 'backend')\n| align delta(1m)\n| every 1m\n| group_by [],\n    [value_nginx_ingress_controller_requests_aggregate:\n       aggregate(value.nginx_ingress_controller_requests)]"
+              }
+            },
+            "title": "# requests p/m"
+          },
+          "width": 3,
+          "xPos": 3,
+          "yPos": 0
+        },
+        {
+          "height": 2,
+          "widget": {
+            "scorecard": {
+              "sparkChartView": {
+                "sparkChartType": "SPARK_LINE"
+              },
+              "timeSeriesQuery": {
+                "timeSeriesQueryLanguage": "fetch prometheus_target\n| metric\n    'prometheus.googleapis.com/nginx_ingress_controller_request_duration_seconds/histogram'\n| filter (metric.ingress == 'backend')\n| align delta(1m)\n| every 1m\n| group_by [],\n    [value_nginx_ingress_controller_request_duration_seconds_mean:\n       mean(value.nginx_ingress_controller_request_duration_seconds)]"
+              }
+            },
+            "title": "latency"
+          },
+          "width": 3,
+          "xPos": 6,
+          "yPos": 0
+        },
+        {
+          "height": 3,
+          "widget": {
+            "title": "latency trend",
+            "xyChart": {
+              "chartOptions": {
+                "mode": "COLOR"
+              },
+              "dataSets": [
+                {
+                  "plotType": "LINE",
+                  "targetAxis": "Y1",
+                  "timeSeriesQuery": {
+                    "timeSeriesQueryLanguage": "fetch prometheus_target\n| metric\n    'prometheus.googleapis.com/nginx_ingress_controller_request_duration_seconds/histogram'\n| filter (metric.ingress == 'backend')\n| align delta(1m)\n| every 1m\n| group_by [],\n    [value_nginx_ingress_controller_request_duration_seconds_mean:\n       mean(value.nginx_ingress_controller_request_duration_seconds)]"
+                  }
+                }
+              ],
+              "timeshiftDuration": "0s",
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": "LINEAR"
+              }
+            }
+          },
+          "width": 3,
+          "xPos": 6,
+          "yPos": 2
+        },
+        {
+          "height": 3,
+          "widget": {
+            "title": "# errors trend",
+            "xyChart": {
+              "chartOptions": {
+                "mode": "COLOR"
+              },
+              "dataSets": [
+                {
+                  "legendTemplate": "# of errors",
+                  "minAlignmentPeriod": "60s",
+                  "plotType": "LINE",
+                  "targetAxis": "Y1",
+                  "timeSeriesQuery": {
+                    "apiSource": "DEFAULT_CLOUD",
+                    "timeSeriesFilter": {
+                      "aggregation": {
+                        "alignmentPeriod": "60s",
+                        "crossSeriesReducer": "REDUCE_NONE",
+                        "perSeriesAligner": "ALIGN_DELTA"
+                      },
+                      "filter": "metric.type=\"prometheus.googleapis.com/nginx_ingress_controller_requests/counter\" resource.type=\"prometheus_target\" metric.label.\"status\"=monitoring.regex.full_match(\"^5.*\") metric.label.\"ingress\"=\"backend\"",
+                      "secondaryAggregation": {
+                        "alignmentPeriod": "60s",
+                        "crossSeriesReducer": "REDUCE_SUM",
+                        "perSeriesAligner": "ALIGN_SUM"
+                      }
+                    }
+                  }
+                }
+              ],
+              "timeshiftDuration": "0s",
+              "yAxis": {
+                "label": "y1Axis",
+                "scale": "LINEAR"
+              }
+            }
+          },
+          "width": 3,
+          "xPos": 9,
+          "yPos": 2
+        },
+        {
+          "height": 2,
+          "widget": {
+            "scorecard": {
+              "sparkChartView": {
+                "sparkChartType": "SPARK_LINE"
+              },
+              "thresholds": [
+                {
+                  "color": "RED",
+                  "direction": "ABOVE",
+                  "label": "",
+                  "value": 4
+                },
+                {
+                  "color": "YELLOW",
+                  "direction": "ABOVE",
+                  "label": "",
+                  "value": 0
+                }
+              ],
+              "timeSeriesQuery": {
+                "timeSeriesQueryLanguage": "fetch prometheus_target\n| metric 'prometheus.googleapis.com/nginx_ingress_controller_requests/counter'\n| filter (metric.ingress == 'backend' && metric.status =~ '^5.*')\n| align delta(1m)\n| every 1m\n| group_by [],\n    [value_nginx_ingress_controller_requests_aggregate:\n       aggregate(value.nginx_ingress_controller_requests)]"
+              }
+            },
+            "title": "# errors"
+          },
+          "width": 3,
+          "xPos": 9,
+          "yPos": 0
+        },
+        {
+          "height": 2,
+          "widget": {
+            "text": {
+              "content": "This is my service.\n\n[Dive Deeper](https://example.com)",
+              "format": "MARKDOWN"
+            },
+            "title": "My Service"
+          },
+          "width": 3,
+          "xPos": 0,
+          "yPos": 0
+        }
+      ]
+    }
+  }
