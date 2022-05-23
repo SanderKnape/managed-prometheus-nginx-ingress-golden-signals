@@ -25,7 +25,7 @@
                         "crossSeriesReducer": "REDUCE_NONE",
                         "perSeriesAligner": "ALIGN_DELTA"
                       },
-                      "filter": "metric.type=\"prometheus.googleapis.com/nginx_ingress_controller_requests/counter\" resource.type=\"prometheus_target\" metric.label.\"ingress\"=\"backend\"",
+                      "filter": "metric.type=\"prometheus.googleapis.com/nginx_ingress_controller_requests/counter\" resource.type=\"prometheus_target\" metric.label.\"ingress\"=\"my-service\"",
                       "secondaryAggregation": {
                         "alignmentPeriod": "60s",
                         "crossSeriesReducer": "REDUCE_SUM",
@@ -54,7 +54,7 @@
                 "sparkChartType": "SPARK_LINE"
               },
               "timeSeriesQuery": {
-                "timeSeriesQueryLanguage": "fetch prometheus_target\n| metric 'prometheus.googleapis.com/nginx_ingress_controller_requests/counter'\n| filter (metric.ingress == 'backend')\n| align delta(1m)\n| every 1m\n| group_by [],\n    [value_nginx_ingress_controller_requests_aggregate:\n       aggregate(value.nginx_ingress_controller_requests)]"
+                "timeSeriesQueryLanguage": "fetch prometheus_target\n| metric 'prometheus.googleapis.com/nginx_ingress_controller_requests/counter'\n| filter (metric.ingress == 'my-service')\n| align delta(1m)\n| every 1m\n| group_by [],\n    [value_nginx_ingress_controller_requests_aggregate:\n       aggregate(value.nginx_ingress_controller_requests)]"
               }
             },
             "title": "# requests p/m"
@@ -71,7 +71,7 @@
                 "sparkChartType": "SPARK_LINE"
               },
               "timeSeriesQuery": {
-                "timeSeriesQueryLanguage": "fetch prometheus_target\n| metric\n    'prometheus.googleapis.com/nginx_ingress_controller_request_duration_seconds/histogram'\n| filter (metric.ingress == 'backend')\n| align delta(1m)\n| every 1m\n| group_by [],\n    [value_nginx_ingress_controller_request_duration_seconds_mean:\n       mean(value.nginx_ingress_controller_request_duration_seconds)]"
+                "timeSeriesQueryLanguage": "fetch prometheus_target\n| metric\n    'prometheus.googleapis.com/nginx_ingress_controller_request_duration_seconds/histogram'\n| filter (metric.ingress == 'my-service')\n| align delta(1m)\n| every 1m\n| group_by [],\n    [value_nginx_ingress_controller_request_duration_seconds_mean:\n       mean(value.nginx_ingress_controller_request_duration_seconds)]"
               }
             },
             "title": "latency"
@@ -93,7 +93,7 @@
                   "plotType": "LINE",
                   "targetAxis": "Y1",
                   "timeSeriesQuery": {
-                    "timeSeriesQueryLanguage": "fetch prometheus_target\n| metric\n    'prometheus.googleapis.com/nginx_ingress_controller_request_duration_seconds/histogram'\n| filter (metric.ingress == 'backend')\n| align delta(1m)\n| every 1m\n| group_by [],\n    [value_nginx_ingress_controller_request_duration_seconds_mean:\n       mean(value.nginx_ingress_controller_request_duration_seconds)]"
+                    "timeSeriesQueryLanguage": "fetch prometheus_target\n| metric\n    'prometheus.googleapis.com/nginx_ingress_controller_request_duration_seconds/histogram'\n| filter (metric.ingress == 'my-service')\n| align delta(1m)\n| every 1m\n| group_by [],\n    [value_nginx_ingress_controller_request_duration_seconds_mean:\n       mean(value.nginx_ingress_controller_request_duration_seconds)]"
                   }
                 }
               ],
@@ -130,7 +130,7 @@
                         "crossSeriesReducer": "REDUCE_NONE",
                         "perSeriesAligner": "ALIGN_DELTA"
                       },
-                      "filter": "metric.type=\"prometheus.googleapis.com/nginx_ingress_controller_requests/counter\" resource.type=\"prometheus_target\" metric.label.\"status\"=monitoring.regex.full_match(\"^5.*\") metric.label.\"ingress\"=\"backend\"",
+                      "filter": "metric.type=\"prometheus.googleapis.com/nginx_ingress_controller_requests/counter\" resource.type=\"prometheus_target\" metric.label.\"status\"=monitoring.regex.full_match(\"^5.*\") metric.label.\"ingress\"=\"my-service\"",
                       "secondaryAggregation": {
                         "alignmentPeriod": "60s",
                         "crossSeriesReducer": "REDUCE_SUM",
@@ -173,7 +173,7 @@
                 }
               ],
               "timeSeriesQuery": {
-                "timeSeriesQueryLanguage": "fetch prometheus_target\n| metric 'prometheus.googleapis.com/nginx_ingress_controller_requests/counter'\n| filter (metric.ingress == 'backend' && metric.status =~ '^5.*')\n| align delta(1m)\n| every 1m\n| group_by [],\n    [value_nginx_ingress_controller_requests_aggregate:\n       aggregate(value.nginx_ingress_controller_requests)]"
+                "timeSeriesQueryLanguage": "fetch prometheus_target\n| metric 'prometheus.googleapis.com/nginx_ingress_controller_requests/counter'\n| filter (metric.ingress == 'my-service' && metric.status =~ '^5.*')\n| align delta(1m)\n| every 1m\n| group_by [],\n    [value_nginx_ingress_controller_requests_aggregate:\n       aggregate(value.nginx_ingress_controller_requests)]"
               }
             },
             "title": "# errors"
